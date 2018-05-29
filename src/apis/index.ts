@@ -109,7 +109,6 @@ import * as redis from './redis';
 import * as replicapool from './replicapool';
 import * as replicapoolupdater from './replicapoolupdater';
 import * as reseller from './reseller';
-import * as resourceviews from './resourceviews';
 import * as runtimeconfig from './runtimeconfig';
 import * as safebrowsing from './safebrowsing';
 import * as script from './script';
@@ -250,7 +249,6 @@ export const APIS: APIList = {
   replicapool: replicapool.VERSIONS,
   replicapoolupdater: replicapoolupdater.VERSIONS,
   reseller: reseller.VERSIONS,
-  resourceviews: resourceviews.VERSIONS,
   runtimeconfig: runtimeconfig.VERSIONS,
   safebrowsing: safebrowsing.VERSIONS,
   script: script.VERSIONS,
@@ -391,7 +389,6 @@ export class GeneratedAPIs {
   replicapool = replicapool.replicapool.bind(this);
   replicapoolupdater = replicapoolupdater.replicapoolupdater.bind(this);
   reseller = reseller.reseller.bind(this);
-  resourceviews = resourceviews.resourceviews.bind(this);
   runtimeconfig = runtimeconfig.runtimeconfig.bind(this);
   safebrowsing = safebrowsing.safebrowsing.bind(this);
   script = script.script.bind(this);

@@ -106,6 +106,14 @@ export namespace dlp_v2 {
      */
     requestedSourceTable?: Schema$GooglePrivacyDlpV2BigQueryTable;
   }
+  /**
+   * An auxiliary table contains statistical information on the relative
+   * frequency of different quasi-identifiers values. It has one or several
+   * quasi-identifiers columns, and one column that indicates the relative
+   * frequency of each quasi-identifier tuple. If a tuple is present in the data
+   * but not in the auxiliary table, the corresponding relative frequency is
+   * assumed to be zero (and thus, the tuple is highly reidentifiable).
+   */
   export interface Schema$GooglePrivacyDlpV2AuxiliaryTable {
     /**
      * Quasi-identifier columns. [required]
@@ -151,6 +159,7 @@ export namespace dlp_v2 {
      * will be scanned. Cannot be used in conjunction with TimespanConfig.
      */
     rowsLimit?: string;
+    sampleMethod?: string;
     /**
      * Complete BigQuery table reference.
      */
@@ -352,10 +361,17 @@ export namespace dlp_v2 {
     bytesLimitPerFile?: string;
     fileSet?: Schema$GooglePrivacyDlpV2FileSet;
     /**
+     * Limits the number of files to scan to this percentage of the input
+     * FileSet. Number of files scanned is rounded down. Must be between 0 and
+     * 100, inclusively. Both 0 and 100 means no limit. Defaults to 0.
+     */
+    filesLimitPercent?: number;
+    /**
      * List of file type groups to include in the scan. If empty, all files are
      * scanned and available data format processors are applied.
      */
     fileTypes?: string[];
+    sampleMethod?: string;
   }
   /**
    * Message representing a single file or path in Cloud Storage.
@@ -580,7 +596,7 @@ export namespace dlp_v2 {
      * value type integer or string.  The tweak is constructed as a sequence of
      * bytes in big endian byte order such that:  - a 64 bit integer is encoded
      * followed by a single byte of value 1 - a string is encoded in UTF-8
-     * format followed by a single byte of value  å 2
+     * format followed by a single byte of value 2
      */
     context?: Schema$GooglePrivacyDlpV2FieldId;
     /**
@@ -629,32 +645,33 @@ export namespace dlp_v2 {
    */
   export interface Schema$GooglePrivacyDlpV2CustomInfoType {
     /**
-     * Set of detection rules to apply to all findings of this custom info type.
+     * Set of detection rules to apply to all findings of this CustomInfoType.
      * Rules are applied in order that they are specified. Not supported for the
-     * `surrogate_type` custom info type.
+     * `surrogate_type` CustomInfoType.
      */
     detectionRules?: Schema$GooglePrivacyDlpV2DetectionRule[];
     /**
-     * Dictionary-based custom info type.
+     * A list of phrases to detect as a CustomInfoType.
      */
     dictionary?: Schema$GooglePrivacyDlpV2Dictionary;
     /**
-     * Info type configuration. All custom info types must have configurations
-     * that do not conflict with built-in info types or other custom info types.
+     * All CustomInfoTypes must have a name that does not conflict with built-in
+     * InfoTypes or other CustomInfoTypes.
      */
     infoType?: Schema$GooglePrivacyDlpV2InfoType;
     /**
-     * Likelihood to return for this custom info type. This base value can be
+     * Likelihood to return for this CustomInfoType. This base value can be
      * altered by a detection rule if the finding meets the criteria specified
      * by the rule. Defaults to `VERY_LIKELY` if not specified.
      */
     likelihood?: string;
     /**
-     * Regex-based custom info type.
+     * Regular expression based CustomInfoType.
      */
     regex?: Schema$GooglePrivacyDlpV2Regex;
     /**
-     * Surrogate info type.
+     * Message for detecting output from deidentification transformations that
+     * support reversing.
      */
     surrogateType?: Schema$GooglePrivacyDlpV2SurrogateType;
   }
@@ -820,7 +837,7 @@ export namespace dlp_v2 {
     updateTime?: string;
   }
   /**
-   * Rule for modifying a custom info type to alter behavior under certain
+   * Rule for modifying a CustomInfoType to alter behavior under certain
    * circumstances, depending on the specific details of the rule. Not supported
    * for the `surrogate_type` custom info type.
    */
@@ -1092,7 +1109,7 @@ export namespace dlp_v2 {
    */
   export interface Schema$GooglePrivacyDlpV2HotwordRule {
     /**
-     * Regex pattern defining what qualifies as a hotword.
+     * Regular expression pattern defining what qualifies as a hotword.
      */
     hotwordRegex?: Schema$GooglePrivacyDlpV2Regex;
     /**
@@ -1148,7 +1165,10 @@ export namespace dlp_v2 {
    */
   export interface Schema$GooglePrivacyDlpV2InfoType {
     /**
-     * Name of the information type.
+     * Name of the information type. Either a name of your choosing when
+     * creating a CustomInfoType, or one of the names listed at
+     * https://cloud.google.com/dlp/docs/infotypes-reference when specifying a
+     * built-in type.
      */
     name?: string;
   }
@@ -1251,7 +1271,8 @@ export namespace dlp_v2 {
     includeQuote?: boolean;
     /**
      * Restricts what info_types to look for. The values must correspond to
-     * InfoType values returned by ListInfoTypes or found in documentation.
+     * InfoType values returned by ListInfoTypes or listed at
+     * https://cloud.google.com/dlp/docs/infotypes-reference.
      */
     infoTypes?: Schema$GooglePrivacyDlpV2InfoType[];
     limits?: Schema$GooglePrivacyDlpV2FindingLimits;
@@ -2274,7 +2295,7 @@ export namespace dlp_v2 {
    * These types of transformations are those that perform pseudonymization,
    * thereby producing a &quot;surrogate&quot; as output. This should be used in
    * conjunction with a field on the transformation such as
-   * `surrogate_info_type`. This custom info type does not support the use of
+   * `surrogate_info_type`. This CustomInfoType does not support the use of
    * `detection_rules`.
    */
   export interface Schema$GooglePrivacyDlpV2SurrogateType {}

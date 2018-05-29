@@ -499,7 +499,7 @@ export namespace dfareporting_v2_8 {
      */
     subaccountId?: string;
     /**
-     * Trafficker type of this user profile.
+     * Trafficker type of this user profile. This is a read-only field.
      */
     traffickerType?: string;
     /**
@@ -2010,7 +2010,7 @@ export namespace dfareporting_v2_8 {
      */
     commercialId?: string;
     /**
-     * List of companion creatives assigned to an in-Stream videocreative.
+     * List of companion creatives assigned to an in-Stream video creative.
      * Acceptable values include IDs of existing flash and image creatives.
      * Applicable to the following creative types: all VPAID and all
      * INSTREAM_VIDEO with dynamicAssetSelection set to false.
@@ -34709,7 +34709,10 @@ export namespace dfareporting_v2_8 {
 
     /**
      * dfareporting.sizes.list
-     * @desc Retrieves a list of sizes, possibly filtered.
+     * @desc Retrieves a list of sizes, possibly filtered. Retrieved sizes are
+     * globally unique and may include values not currently in use by your
+     * account. Due to this, the list of sizes returned by this method may
+     * differ from the list seen in the Trafficking UI.
      * @example
      * * // BEFORE RUNNING:
      * // ---------------
